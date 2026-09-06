@@ -7,7 +7,7 @@ public class OrderItem {
  
     public OrderItem(Product  product, int quantity){
         if (product == null){
-            throw new IllegalArgumentException("Product is null");
+            throw new IllegalArgumentException("Product cannot be null");
         }
         
         if (quantity < 1){

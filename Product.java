@@ -34,7 +34,7 @@ public class Product {
     public BigDecimal getPrice(){
         return price;
     }
-    public int getstock(){
+    public int getStock(){
         return stock;
     }
     //Stock Management
