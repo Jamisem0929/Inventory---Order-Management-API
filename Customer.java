@@ -21,6 +21,7 @@ public class Customer {
         this.email = email;
         this.orders = new ArrayList<>();
     }
+    //getters
     public int getId(){
         return id;
     }
@@ -29,5 +30,26 @@ public class Customer {
     }
     public String getEmail(){
         return email;
+    }
+    public ArrayList<Order> getOrders() {
+        return new ArrayList<>(orders);
+    }
+    //methods
+    public void addOrder(Order order){
+        if(order == null){
+            throw new IllegalArgumentException("Order cannot be null");
+
+        }
+        if(order.getCustomer() != this){
+            throw new IllegalArgumentException("Order does not belong to this customer");
+        }
+
+        for (Order existingOrder : orders){
+            if (existingOrder.getId() == order.getId()){
+                throw new IllegalArgumentException("Order already exists");
+            }
+
+        }
+        orders.add(order);
     }
 }
