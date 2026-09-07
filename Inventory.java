@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Inventory {
@@ -30,10 +31,12 @@ public class Inventory {
         if(id <= 0){
             throw new IllegalArgumentException("Id must be positive");
         }
-        if (products.remove(id) == null){
-            throw new IllegalArgumentException("Product does not exist");
-        }
-        return products.remove(id);
-
+        return products.remove(id) != null;
+    }
+    public ArrayList<Product> getAllProducts(){
+        return new ArrayList<>(products.values());
+    }
+    public int getProductCount(){
+        return products.size();
     }
 }
