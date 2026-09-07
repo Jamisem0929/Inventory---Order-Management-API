@@ -11,7 +11,7 @@ public class Order {
         if (id <= 0) {
             throw new IllegalArgumentException("Id must be greater than 0");
         }
-        if(customer == null){
+        if (customer == null) {
             throw new IllegalArgumentException("Customer cannot be null");
         }
         this.customer = customer;
@@ -19,7 +19,8 @@ public class Order {
         this.items = new ArrayList<>();
         this.status = OrderStatus.PENDING;
     }
-    //Getters
+
+    // Getters
     public BigDecimal getTotal() {
         BigDecimal total = BigDecimal.ZERO;
         for (OrderItem item : items) {
@@ -28,9 +29,11 @@ public class Order {
         return total;
 
     }
-    public OrderStatus getStatus(){
+
+    public OrderStatus getStatus() {
         return status;
     }
+
     public int getId() {
         return id;
     }
@@ -38,14 +41,15 @@ public class Order {
     public ArrayList<OrderItem> getItems() {
         return new ArrayList<>(items);
     }
-    public Customer getCustomer(){
+
+    public Customer getCustomer() {
         return customer;
     }
 
     // methods
-     public void addItem(OrderItem item) {
-        if( status == OrderStatus.PLACED){
-            throw new IllegalStateException("Order is already placed");
+    public void addItem(OrderItem item) {
+        if (status != OrderStatus.PENDING) {
+            throw new IllegalStateException("Order can only be modified while pending");
         }
         if (item == null) {
             throw new IllegalArgumentException("Item cannot be null");
@@ -56,12 +60,11 @@ public class Order {
             }
         }
         items.add(item);
-    }  
-
+    }
 
     public boolean removeItem(OrderItem item) {
-         if( status == OrderStatus.PLACED){
-            throw new IllegalStateException("Order is already placed");
+        if (status != OrderStatus.PENDING) {
+            throw new IllegalStateException("Order can only be modified while pending");
         }
         if (item == null) {
             throw new IllegalArgumentException("Item cannot be null");
@@ -82,17 +85,36 @@ public class Order {
         return true;
     }
 
-    public boolean placeOrder() {
+    public void placeOrder() {
         if (status == OrderStatus.PLACED) {
-            return false;
+            throw new OrderAlreadyPlacedException("Order is already placed");
+        }
+        if (status == OrderStatus.CANCELLED) {
+            throw new IllegalStateException("Cancelled order cannot be placed");
+        }
+        if (items.isEmpty()) {
+            throw new EmptyOrderException("Order cannot be empty");
         }
         if (!canBeFulfilled()) {
-            return false;
+            throw new InsufficientStockException("Not enough stock to fulfill order");
         }
         for (OrderItem item : items) {
             item.getProduct().removeStock(item.getQuantity());
         }
         status = OrderStatus.PLACED;
-        return true;
+
+    }
+
+    public void cancelOrder() {
+        if (status == OrderStatus.PENDING) {
+            throw new IllegalStateException("Pending orders cannot be cancelled");
+        }
+        if (status == OrderStatus.CANCELLED) {
+            throw new IllegalStateException("Order is already cancelled");
+        }
+        for (OrderItem item : items) {
+            item.getProduct().addStock(item.getQuantity());
+        }
+        status = OrderStatus.CANCELLED;
     }
 }

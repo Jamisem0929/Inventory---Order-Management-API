@@ -1,4 +1,5 @@
 public enum OrderStatus {
     PENDING,
-    PLACED
+    PLACED,
+    CANCELLED
 }

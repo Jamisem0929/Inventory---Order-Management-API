@@ -17,4 +17,25 @@ public class OrderManager {
         order.getCustomer().addOrder(order);
         orders.put(order.getId(), order);
     }
+    public void placeOrder(int id){
+        Order order = orders.get(id);
+        if(order == null){
+            throw new OrderNotFoundException("Order does not exist");
+        }
+        order.placeOrder();
+    }
+    public Order getOrder(int id){
+        if(id <= 0 ){
+            throw new IllegalArgumentException("Id must be positive");
+
+        }
+        return orders.get(id);
+    }
+    public void cancelOrder(int id){
+        Order order = orders.get(id);
+        if( order == null){
+            throw new OrderNotFoundException("Order does not exist");
+        }
+        order.cancelOrder();
+    }
 }
