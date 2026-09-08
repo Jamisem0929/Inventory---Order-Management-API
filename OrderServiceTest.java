@@ -4,7 +4,8 @@ public class OrderServiceTest {
     public static void main(String[] args) {
         Inventory inventory = new Inventory();
         CustomerManager customerManager = new CustomerManager();
-        OrderManager orderManager = new OrderManager();
+        OrderRepository orderRepository = new OrderRepository();
+        OrderManager orderManager = new OrderManager(orderRepository);
 
         OrderService orderService = new OrderService(inventory, customerManager, orderManager);
 
