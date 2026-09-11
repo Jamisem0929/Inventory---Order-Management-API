@@ -28,7 +28,7 @@ public class JdbcOrderRepository {
                     int orderId = results.getInt("id");
                     int customerId = results.getInt("customer_id");
                     String status = results.getString("status");
-                    CustomerRepository customerRepository = new CustomerRepository()
+                    CustomerRepository customerRepository = new CustomerRepository();
                     Customer customer = customerRepository.getCustomerById(customerId);
                     Order order = new Order(customerId, customer, OrderStatus.valueOf(status));
                 }

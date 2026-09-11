@@ -19,6 +19,45 @@ public class Order {
         this.items = new ArrayList<>();
         this.status = OrderStatus.PENDING;
     }
+    public Order(int id, Customer customer, OrderStatus status) {
+    if (id <= 0) {
+        throw new IllegalArgumentException("Id must be greater than 0");
+    }
+
+    if (customer == null) {
+        throw new IllegalArgumentException("Customer cannot be null");
+    }
+
+    if (status == null) {
+        throw new IllegalArgumentException("Status cannot be null");
+    }
+
+        this.id = id;
+        this.customer = customer;
+        this.status = status;
+        this.items = new ArrayList<>();
+    }
+    public Order(int id, Customer customer, OrderStatus status, ArrayList<OrderItem> items) {
+    if (id <= 0) {
+        throw new IllegalArgumentException("Id must be greater than 0");
+    }
+
+    if (customer == null) {
+        throw new IllegalArgumentException("Customer cannot be null");
+    }
+
+    if (status == null) {
+        throw new IllegalArgumentException("Status cannot be null");
+    }
+    if(items == null){
+        throw new IllegalArgumentException("Items cannot be null");
+    }
+
+        this.id = id;
+        this.customer = customer;
+        this.status = status;
+        this.items = new ArrayList<>(items);
+    }
 
     // Getters
     public BigDecimal getTotal() {
