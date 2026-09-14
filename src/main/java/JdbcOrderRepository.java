@@ -30,10 +30,14 @@ public class JdbcOrderRepository {
                     String status = results.getString("status");
                     CustomerRepository customerRepository = new CustomerRepository();
                     Customer customer = customerRepository.getCustomerById(customerId);
-                    Order order = new Order(customerId, customer, OrderStatus.valueOf(status));
+                    OrderStatus orderStatus = OrderStatus.valueOf(status);
+                    ArrayList<OrderItem> items = getOrderItemsByOrderId(orderId);
+                    Order order = new Order(orderId, customer, orderStatus, items);
+                    return order;
+
                 }
             }
-            
+
         }
         return null;
     }
@@ -53,7 +57,7 @@ public class JdbcOrderRepository {
                     Product product = productRepository.getProductById(productId);
                     OrderItem orderItem = new OrderItem(product, quantity, unitPrice);
                     items.add(orderItem);
-                    
+
                 }
                 return items;
             }
